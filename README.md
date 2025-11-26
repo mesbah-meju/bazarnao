@@ -48,53 +48,8 @@ A complete solution for E-commerce Business with exclusive features & super resp
 - MySQL/MariaDB
 - Node.js & NPM (for frontend assets)
 
-## 🛠️ Installation
-
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/mesbah-meju/bazarnao.git
-   cd bazarnao
-   ```
-
-2. **Install dependencies**
-   ```bash
-   composer install
-   npm install
-   ```
-
-3. **Environment setup**
-   ```bash
-   cp .env.example .env
-   php artisan key:generate
-   ```
-
-4. **Configure database**
-   - Update `.env` file with your database credentials
-   ```env
-   DB_CONNECTION=mysql
-   DB_HOST=127.0.0.1
-   DB_PORT=3306
-   DB_DATABASE=your_database
-   DB_USERNAME=your_username
-   DB_PASSWORD=your_password
-   ```
-
-5. **Run migrations**
-   ```bash
-   php artisan migrate
-   ```
-
-6. **Build assets**
-   ```bash
-   npm run dev
-   # or for production
-   npm run build
-   ```
-
-7. **Start the development server**
-   ```bash
-   php artisan serve
-   ```
+🌐 Live Website
+Live URL: https://bazarnao.com/
 
 ## 📁 Project Structure
 
