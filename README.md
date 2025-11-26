@@ -170,7 +170,7 @@ This project is open-sourced software licensed under the [MIT license](LICENSE).
 
 👨‍💻 Backend Developer
 
-**Mesbah Uddin Meju**
+**Mesbah Uddin**
 
 📧 Email: uddin.mesbaah@gmail.com  
 🌐 Website: mesbahuddin.info  
