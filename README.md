@@ -168,6 +168,15 @@ This project is open-sourced software licensed under the [MIT license](LICENSE).
 **4axiz IT Ltd**
 - Website: [https://fouraxiz.com](https://fouraxiz.com)
 
+👨‍💻 Backend Developer
+
+**Mesbah Uddin Meju**
+
+📧 Email: uddin.mesbaah@gmail.com  
+🌐 Website: mesbahuddin.info  
+💼 LinkedIn: mesbah-uddin-meju  
+🐙 GitHub: mesbah-meju
+
 ## 📞 Support
 
 For support, please open an issue in the repository.
