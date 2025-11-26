@@ -1,0 +1,134 @@
+@extends('backend.layouts.app')
+
+@section('content')
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">{{ __('fixed_assets_report') }}</h4>
+                </div>
+                <div class="panel-body">
+                    <form action="{{ route('fixed_assets_report') }}" method="POST" class="form-inline">
+                        @csrf
+                        <div class="form-group">
+                            <label for="fyear">{{ __('year') }}:</label>
+                            <select class="form-control" name="fyear" id="fyear">
+                                @foreach($fyears as $fy)
+                                <option value="{{ $fy->id }}" {{ $fy->id == $fyear ? 'selected' : '' }}>
+                                    {{ $fy->yearName }}
+                                </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-success ml-2">{{ __('search') }}</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" id="printArea">
+        <div class="col-sm-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h5 class="panel-title">{{ __('fixed_assets_report') }} {{ $curentYear->yearName }}</h5>
+                </div>
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>{{ __('particulars') }}</th>
+                                    <th>{{ __('opening_balance_fixed_assets') }}</th>
+                                    <th>{{ __('additions') }}</th>
+                                    <th>{{ __('adjustment') }}</th>
+                                    <th>{{ __('closing_balance_fixed_assets') }}</th>
+                                    <th>{{ __('depreciation_rate') }}</th>
+                                    <th>{{ __('depreciation_value') }}</th>
+                                    <th>{{ __('opening_balance_accumulated_depreciation') }}</th>
+                                    <th>{{ __('additions') }}</th>
+                                    <th>{{ __('adjustment') }}</th>
+                                    <th>{{ __('closing_balance_accumulated_depreciation') }}</th>
+                                    <th>{{ __('written_down_value') }}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if(count($fixedAssets) > 0)
+                                @foreach($fixedAssets as $fixedAsset)
+                                <tr>
+                                    <td>{{ $fixedAsset['headName'] }}</td>
+                                    <td colspan="11"></td>
+                                </tr>
+                                @foreach($fixedAsset['nextlevel'] as $value)
+                                <tr>
+                                    <td style="padding-left: 20px;">{{ $value['headName'] }}</td>
+                                    <td colspan="11"></td>
+                                </tr>
+                                @foreach($value['innerHead'] as $inner)
+                                <tr>
+                                    <td style="padding-left: 40px;">{{ $inner['headName'] }}</td>
+                                    <td>{{ $currency . ' ' . number_format($inner['openig'], 2) }}</td>
+                                    <td>{{ $currency . ' ' . number_format($inner['curentDebit'], 2) }}</td>
+                                    <td>{{ $currency . ' ' . number_format($inner['curentCredit'], 2) }}</td>
+                                    <td>{{ $currency . ' ' . number_format($inner['curentValue'], 2) }}</td>
+                                    <td>{{ $inner['depRate'] . ' %' }}</td>
+                                    <td>{{ $currency . ' ' . number_format($inner['depAmount'], 2) }}</td>
+                                    <td>{{ $currency . ' ' . number_format($inner['revOpening'], 2) }}</td>
+                                    <td>{{ $currency . ' ' . number_format($inner['revCredit'], 2) }}</td>
+                                    <td>{{ $currency . ' ' . number_format($inner['revDebit'], 2) }}</td>
+                                    <td>{{ $currency . ' ' . number_format($inner['revBalance'], 2) }}</td>
+                                    <td>{{ $currency . ' ' . number_format($inner['famount'], 2) }}</td>
+                                </tr>
+                                @endforeach
+                                @endforeach
+                                @endforeach
+                                <tr class="table-secondary">
+                                    <td><strong>{{ __('total') }}</strong></td>
+                                    <td><strong>{{ $currency . ' ' . number_format($fixedAssets[0]['subtotal1'], 2) }}</strong></td>
+                                    <td><strong>{{ $currency . ' ' . number_format($fixedAssets[0]['subtotal2'], 2) }}</strong></td>
+                                    <td><strong>{{ $currency . ' ' . number_format($fixedAssets[0]['subtotal3'], 2) }}</strong></td>
+                                    <td><strong>{{ $currency . ' ' . number_format($fixedAssets[0]['subtotal4'], 2) }}</strong></td>
+                                    <td></td>
+                                    <td><strong>{{ $currency . ' ' . number_format($fixedAssets[0]['subtotal5'], 2) }}</strong></td>
+                                    <td><strong>{{ $currency . ' ' . number_format($fixedAssets[0]['subtotal6'], 2) }}</strong></td>
+                                    <td><strong>{{ $currency . ' ' . number_format($fixedAssets[0]['subtotal7'], 2) }}</strong></td>
+                                    <td><strong>{{ $currency . ' ' . number_format($fixedAssets[0]['subtotal8'], 2) }}</strong></td>
+                                    <td><strong>{{ $currency . ' ' . number_format($fixedAssets[0]['subtotal9'], 2) }}</strong></td>
+                                    <td><strong>{{ $currency . ' ' . number_format($fixedAssets[0]['subtotal10'], 2) }}</strong></td>
+                                </tr>
+                                @endif
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="text-center" id="print">
+                        <button class="btn btn-warning btn-md" id="btnPrint" onclick="printPageArea('printArea');">
+                            <i class="fa fa-print"></i> Print
+                        </button>
+                        <a href="{{ route('account.fixed_assets_report_excel', ['fyear' => $fyear]) }}" target="_blank" title="download excel">
+                            <button class="btn btn-primary btn-md">
+                                <i class="fa fa-file-excel-o"></i> Excel
+                            </button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section('scripts')
+<script>
+    function printPageArea(area) {
+        var printContent = document.getElementById(area).innerHTML;
+        var win = window.open('', '', 'height=700,width=800');
+        win.document.write('<html><head><title>Print</title>');
+        win.document.write('</head><body>');
+        win.document.write(printContent);
+        win.document.write('</body></html>');
+        win.document.close();
+        win.print();
+    }
+</script>
+@endsection
+@endsection
